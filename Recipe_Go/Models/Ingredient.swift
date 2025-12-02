@@ -1,18 +1,15 @@
-//
-//  Ingredient.swift
-//  Recipe_Go
-//
-//  Created by B B on 11/25/25.
-//
+import Foundation
 
-import SwiftUI
-
-struct Ingredient: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+struct Ingredient: Codable, Hashable {
+    let name: String
+    let measure: String
 }
 
-#Preview {
-    Ingredient()
+extension Ingredient {
+    static let preview = [
+        Ingredient(name: "Pasta", measure: "500g"),
+        Ingredient(name: "Bacon", measure: "200g"),
+        Ingredient(name: "Eggs", measure: "4"),
+        Ingredient(name: "Cheese", measure: "100g")
+    ]
 }

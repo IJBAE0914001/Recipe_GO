@@ -3,6 +3,13 @@
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
+    <entity name="RecipeEntity" representedClassName="RecipeEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="NO" attributeType="String" usesScalarValueType="NO"/>
+        <attribute name="ingredientsData" optional="YES" attributeType="Binary" usesScalarValueType="NO"/>
+        <attribute name="instructions" optional="YES" attributeType="String" usesScalarValueType="NO"/>
+        <attribute name="thumbnail" optional="YES" attributeType="String" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String" usesScalarValueType="NO"/>
+    </entity>
     <elements>
         <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
     </elements>
