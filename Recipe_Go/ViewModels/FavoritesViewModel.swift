@@ -3,15 +3,18 @@ import CoreData
 
 @MainActor
 class FavoritesViewModel: ObservableObject {
-    @Published var savedRecipes: [Recipe] = []
-    @Published var favoriteIDs: Set<String> = []
+    // 게시된 속성 (Published Properties)
+    @Published var savedRecipes: [Recipe] = []      // 저장된 레시피 목록 (Saved Recipes)
+    @Published var favoriteIDs: Set<String> = []    // 즐겨찾기 ID 집합 (Favorite IDs Set)
     
+    // Core Data Context
     private let viewContext = PersistenceController.shared.container.viewContext
     
     init() {
         fetchFavorites()
     }
     
+    // 즐겨찾기 목록 가져오기 (Fetch Favorites)
     func fetchFavorites() {
         let request = NSFetchRequest<NSManagedObject>(entityName: "RecipeEntity")
         
@@ -38,6 +41,7 @@ class FavoritesViewModel: ObservableObject {
         }
     }
     
+    // 즐겨찾기 토글 (Toggle Favorite)
     func toggleFavorite(recipe: Recipe) {
         let request = NSFetchRequest<NSManagedObject>(entityName: "RecipeEntity")
         request.predicate = NSPredicate(format: "id == %@", recipe.id)
@@ -45,10 +49,10 @@ class FavoritesViewModel: ObservableObject {
         do {
             let results = try viewContext.fetch(request)
             if let existing = results.first {
-                // Remove
+                // 삭제 (Remove)
                 viewContext.delete(existing)
             } else {
-                // Add
+                // 추가 (Add)
                 guard let entity = NSEntityDescription.entity(forEntityName: "RecipeEntity", in: viewContext) else { return }
                 let newItem = NSManagedObject(entity: entity, insertInto: viewContext)
                 
@@ -63,12 +67,13 @@ class FavoritesViewModel: ObservableObject {
                 }
             }
             try viewContext.save()
-            fetchFavorites() // Refresh list and IDs
+            fetchFavorites() // 목록 및 ID 갱신 (Refresh list and IDs)
         } catch {
             print("Error toggling favorite: \(error)")
         }
     }
     
+    // 즐겨찾기 여부 확인 (Check if Favorite)
     func isFavorite(recipe: Recipe) -> Bool {
         return favoriteIDs.contains(recipe.id)
     }

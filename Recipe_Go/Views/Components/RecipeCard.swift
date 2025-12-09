@@ -6,7 +6,7 @@ struct RecipeCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Image Section
+            // 이미지 영역 (Image Section)
             ZStack(alignment: .topTrailing) {
                 AsyncImage(url: URL(string: recipe.thumbnail ?? "")) { image in
                     image.resizable()
@@ -22,6 +22,7 @@ struct RecipeCard: View {
                 .frame(height: 150)
                 .clipped()
                 
+                // 카드 내 하트 버튼 (Heart Button inside Card)
                 Button(action: {
                     favoritesViewModel.toggleFavorite(recipe: recipe)
                 }) {
@@ -34,7 +35,7 @@ struct RecipeCard: View {
                 .padding(8)
             }
             
-            // Content Section
+            // 컨텐츠 영역 (Content Section)
             VStack(alignment: .leading, spacing: 8) {
                 Text(recipe.title)
                     .font(.headline)

@@ -7,33 +7,27 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             List {
-                // General Settings
+                // 일반 설정 (General Settings)
                 Section(header: Text(languageManager.localizedString("General"))) {
+                    // 테마 설정 (Display & Brightness)
                     Picker(selection: $themeManager.selectedTheme, label: Label(languageManager.localizedString("Display & Brightness"), systemImage: "sun.max")) {
                         ForEach(AppTheme.allCases) { theme in
                             Text(languageManager.localizedString(theme.rawValue)).tag(theme)
                         }
                     }
-                    
-                    Picker(selection: $languageManager.selectedLanguage, label: Label(languageManager.localizedString("Language"), systemImage: "globe")) {
-                        ForEach(AppLanguage.allCases) { language in
-                            Text(language.rawValue).tag(language)
-                        }
-                    }
                 }
                 
-                // About
+                // 앱 정보 (About)
                 Section(header: Text(languageManager.localizedString("About")), footer: HStack {
                     Spacer()
+                    // 앱 버전 표시 (App Version)
                     Text("\(languageManager.localizedString("Version")) 1.0.0")
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .padding(.top, 20)
                     Spacer()
                 }) {
-                    NavigationLink(destination: Text("Terms of Service")) {
-                        Label(languageManager.localizedString("Terms of Service"), systemImage: "doc.text")
-                    }
+                   // 이용약관 삭제됨 (Terms of Service removed)
                 }
             }
             .navigationTitle(languageManager.localizedString("Settings"))

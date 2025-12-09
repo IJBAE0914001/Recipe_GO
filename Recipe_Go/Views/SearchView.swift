@@ -6,7 +6,7 @@ struct SearchView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Search Bar Area
+            // 검색바 영역 (Search Bar Area)
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.black)
@@ -19,6 +19,7 @@ struct SearchView: View {
             .padding()
             .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
             
+            // 검색 결과 목록 (Search Results List)
             ScrollView {
                 if viewModel.isLoading {
                     ProgressView()

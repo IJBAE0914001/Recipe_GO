@@ -1,6 +1,6 @@
 import Foundation
 
-// MARK: - API Response Models
+// MARK: - API Response Models (API 응답 모델)
 
 struct FoodSafetyResponse: Codable {
     let cookRcp01: CookRcp01?
@@ -32,14 +32,16 @@ struct ResultCode: Codable {
     }
 }
 
+// 식품안전나라 API 레시피 모델 (FoodSafetyKorea API Recipe Model)
 struct FoodSafetyRecipe: Codable {
-    let rcpSeq: String
-    let rcpNm: String
-    let rcpWay2: String
-    let rcpPat2: String
-    let attFileNoMain: String
-    let attFileNoMk: String
-    let rcpPartsDtls: String
+    let rcpSeq: String        // 레시피 일련번호 (Recipe Sequence)
+    let rcpNm: String         // 메뉴명 (Menu Name)
+    let rcpWay2: String       // 조리방법 (Cooking Method)
+    let rcpPat2: String       // 요리종류 (Cuisine Type)
+    let attFileNoMain: String // 메인 이미지 URL (Main Image URL)
+    let attFileNoMk: String   // 메이킹 이미지 URL (Making Image URL)
+    let rcpPartsDtls: String  // 재료 정보 (Ingredients Details)
+    // 매뉴얼 내용 및 이미지 (Manual Steps and Images)
     let manual01: String?
     let manual02: String?
     let manual03: String?
@@ -132,30 +134,32 @@ struct FoodSafetyRecipe: Codable {
     }
 }
 
-// MARK: - Domain Model
+// MARK: - Domain Model (도메인 모델)
 
+// 앱 내부에서 사용하는 레시피 모델 (Internal Recipe Model)
 struct Recipe: Identifiable, Codable {
-    let id: String
-    let title: String
-    let category: String?
-    let area: String?
-    let instructions: String?
-    let thumbnail: String?
-    let tags: String?
-    let youtube: String?
-    let ingredients: [Ingredient]?
+    let id: String           // 고유 ID (Unique ID)
+    let title: String        // 제목 (Title)
+    let category: String?    // 카테고리 (Category)
+    let area: String?        // 지역 (Area - Not used currently)
+    let instructions: String? // 조리법 설명 (Cooking Instructions)
+    let thumbnail: String?   // 썸네일 이미지 URL (Thumbnail URL)
+    let tags: String?        // 태그 (Tags - e.g. Cooking Method)
+    let youtube: String?     // 유튜브 링크 (YouTube Link - Not used currently)
+    let ingredients: [Ingredient]? // 재료 목록 (List of Ingredients)
     
-    // Initializer to convert from API model
+    // API 모델로부터 초기화 (Initializer from API Model)
     init(from apiRecipe: FoodSafetyRecipe) {
         self.id = apiRecipe.rcpSeq
         self.title = apiRecipe.rcpNm
         self.category = apiRecipe.rcpPat2
-        self.area = nil // Not available in new API
+        self.area = nil // 새 API에서는 제공 안됨 (Not available in new API)
+        // http를 https로 변환하여 ATS 문제 해결 (Convert http to https for ATS compliance)
         self.thumbnail = apiRecipe.attFileNoMain.replacingOccurrences(of: "http://", with: "https://")
-        self.tags = apiRecipe.rcpWay2 // Using cooking method as tag
-        self.youtube = nil // Not available
+        self.tags = apiRecipe.rcpWay2 // 조리 방법을 태그로 사용 (Using cooking method as tag)
+        self.youtube = nil // 제공 안됨 (Not available)
         
-        // Combine manuals
+        // 매뉴얼 합치기 (Combine manuals)
         var combinedInstructions = ""
         let manuals = [
             apiRecipe.manual01, apiRecipe.manual02, apiRecipe.manual03, apiRecipe.manual04, apiRecipe.manual05,
@@ -171,19 +175,18 @@ struct Recipe: Identifiable, Codable {
         }
         self.instructions = combinedInstructions.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Parse ingredients
-        // Format example: "북어채 25g(15개), 새우 10g(3마리), 사과 30g(1/5개)..."
-        // This is a simple parser, might need refinement
+        // 재료 파싱 (Parse ingredients)
+        // 예시 포맷 (Format example): "북어채 25g(15개), 새우 10g(3마리), 사과 30g(1/5개)..."
+        // 간단한 파서를 사용하며 개선이 필요할 수 있음 (Simple parser, might need refinement)
         let parts = apiRecipe.rcpPartsDtls.components(separatedBy: ",")
         self.ingredients = parts.map { part in
             let trimmed = part.trimmingCharacters(in: .whitespacesAndNewlines)
-            // Heuristic: Split by space, last part might be measure?
-            // Or just put everything in name for now as it's hard to separate perfectly without NLP
+            // 휴리스틱: 전체를 이름으로 사용 (Heuristic: Use entire string as name for now)
             return Ingredient(name: trimmed, measure: "")
         }
     }
     
-    // Helper for manual initialization (e.g. previews)
+    // 프리뷰 등을 위한 초기화 헬퍼 (Helper for manual initialization e.g. previews)
     init(id: String, title: String, thumbnail: String?, instructions: String?, ingredients: [Ingredient]?, category: String? = nil) {
         self.id = id
         self.title = title

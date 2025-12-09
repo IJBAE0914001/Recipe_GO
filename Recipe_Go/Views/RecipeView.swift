@@ -1,13 +1,15 @@
 import SwiftUI
 
 struct RecipeView: View {
+    // 레시피 데이터 모델 (Recipe Data Model)
     let recipe: Recipe
+    // 즐겨찾기 뷰 모델 (Favorites View Model)
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                // Hero Image
+                // 대표 이미지 (Hero Image)
                 ZStack(alignment: .topTrailing) {
                     AsyncImage(url: URL(string: recipe.thumbnail ?? "")) { image in
                         image.resizable()
@@ -22,24 +24,11 @@ struct RecipeView: View {
                     .overlay(
                         LinearGradient(gradient: Gradient(colors: [.clear, .black.opacity(0.5)]), startPoint: .center, endPoint: .bottom)
                     )
-                    
-                    // Heart Icon on Image
-                    Button(action: {
-                        favoritesViewModel.toggleFavorite(recipe: recipe)
-                    }) {
-                        Image(systemName: favoritesViewModel.isFavorite(recipe: recipe) ? "heart.fill" : "heart")
-                            .font(.title)
-                            .foregroundColor(favoritesViewModel.isFavorite(recipe: recipe) ? .red : .white)
-                            .padding()
-                            .background(Color.black.opacity(0.3))
-                            .clipShape(Circle())
-                    }
-                    .padding()
                 }
                 
-                // Content Container
+                // 컨텐츠 컨테이너 (Content Container)
                 VStack(alignment: .leading, spacing: 24) {
-                    // Header
+                    // 헤더 (Header): 제목 및 카테고리
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Text(recipe.title)
@@ -50,6 +39,7 @@ struct RecipeView: View {
                             Spacer()
                         }
                         
+                        // 카테고리 태그 (Category Tag)
                         if let category = recipe.category {
                             Text(category)
                                 .font(.subheadline)
@@ -61,9 +51,9 @@ struct RecipeView: View {
                         }
                     }
                     
-                    // Ingredients
+                    // 재료 목록 (Ingredients)
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Ingredients")
+                        Text("재료")
                             .font(.title2)
                             .bold()
                         
@@ -86,9 +76,9 @@ struct RecipeView: View {
                         }
                     }
                     
-                    // Instructions
+                    // 조리법 (Instructions)
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Recipe")
+                        Text("조리법")
                             .font(.title2)
                             .bold()
                         
@@ -101,10 +91,22 @@ struct RecipeView: View {
                 .padding(24)
                 .background(Color(uiColor: .systemBackground))
                 .cornerRadius(30, corners: [.topLeft, .topRight])
-                .offset(y: -30) // Overlap effect
+                .offset(y: -30) // 이미지를 살짝 덮는 효과 (Overlap effect)
             }
         }
         .edgesIgnoringSafeArea(.top)
+        // 툴바 설정 (Toolbar Configuration)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // 즐겨찾기 하트 버튼 (Heart Icon Button)
+                Button(action: {
+                    favoritesViewModel.toggleFavorite(recipe: recipe)
+                }) {
+                    Image(systemName: favoritesViewModel.isFavorite(recipe: recipe) ? "heart.fill" : "heart")
+                        .foregroundColor(favoritesViewModel.isFavorite(recipe: recipe) ? .red : .primary)
+                }
+            }
+        }
     }
 }
 

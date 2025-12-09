@@ -8,6 +8,7 @@ struct FavoritesView: View {
         NavigationView {
             ScrollView {
                 if viewModel.savedRecipes.isEmpty {
+                    // 즐겨찾기 없음 상태 (Empty State)
                     VStack(spacing: 20) {
                         Image(systemName: "heart.slash")
                             .font(.system(size: 60))
@@ -18,12 +19,13 @@ struct FavoritesView: View {
                     }
                     .frame(maxWidth: .infinity, minHeight: 400)
                 } else {
+                    // 저장된 레시피 목록 (Saved Recipes List)
                     LazyVStack(spacing: 16) {
                         ForEach(viewModel.savedRecipes) { recipe in
                             NavigationLink(destination: RecipeView(recipe: recipe)) {
                                 RecipeCard(recipe: recipe)
                             }
-                            .buttonStyle(PlainButtonStyle()) // Remove default link styling
+                            .buttonStyle(PlainButtonStyle()) // 기본 링크 스타일 제거 (Remove default link styling)
                         }
                     }
                     .padding()

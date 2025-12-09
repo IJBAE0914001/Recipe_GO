@@ -1,8 +1,9 @@
 import Foundation
 
+// 재료 모델 (Ingredient Model)
 struct Ingredient: Codable, Hashable {
-    let name: String
-    let measure: String
+    let name: String    // 재료명 (Name)
+    let measure: String // 계량 (Measurement)
 }
 
 extension Ingredient {

@@ -4,6 +4,7 @@ struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @EnvironmentObject var languageManager: LanguageManager
     
+    // 그리드 레이아웃 설정 (Grid Layout Configuration)
     private let columns = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
@@ -12,16 +13,16 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 0) {
-                // Sticky Header Area
+                // 고정 헤더 영역 (Sticky Header Area)
                 VStack(alignment: .leading, spacing: 20) {
-                    // Header / Title Area
+                    // 헤더 / 타이틀 영역 (Header / Title Area)
                     Text(languageManager.localizedString("What would you like\nto cook today?"))
                         .font(.largeTitle)
                         .bold()
                         .padding(.horizontal)
                         .padding(.top)
                     
-                    // Search Bar Entry
+                    // 검색바 진입점 (Search Bar Entry)
                     NavigationLink(destination: SearchView()) {
                         HStack {
                             Image(systemName: "magnifyingglass")
@@ -31,14 +32,14 @@ struct HomeView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(Color(uiColor: .secondarySystemGroupedBackground)) // Adaptive background
+                        .background(Color(uiColor: .secondarySystemGroupedBackground)) // 반응형 배경 (Adaptive background)
                         .cornerRadius(10)
                         .padding(.horizontal)
                         .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
                     }
                 }
                 .padding(.bottom, 20)
-                .background(Color(uiColor: .systemGroupedBackground)) // Match main background
+                .background(Color(uiColor: .systemGroupedBackground)) // 메인 배경과 일치 (Match main background)
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
@@ -50,6 +51,7 @@ struct HomeView: View {
                                 .foregroundColor(.red)
                                 .padding()
                         } else {
+                            // 추천 레시피 그리드 (Recommended Recipes Grid)
                             LazyVGrid(columns: columns, spacing: 20) {
                                 ForEach(viewModel.recipes) { recipe in
                                     NavigationLink(destination: RecipeView(recipe: recipe)) {
@@ -60,11 +62,12 @@ struct HomeView: View {
                             .padding(.horizontal)
                         }
                     }
-                    .padding(.top, 10) // Add some spacing between sticky header and content
+                    .padding(.top, 10) // 고정 헤더와 컨텐츠 사이 여백 (Spacing between header and content)
                 }
             }
             .navigationBarHidden(true)
             .background(Color(uiColor: .systemGroupedBackground))
+            // 초기 데이터 로드 (Initial Data Load)
             .task {
                 if viewModel.recipes.isEmpty {
                     await viewModel.fetchRecommendations()
