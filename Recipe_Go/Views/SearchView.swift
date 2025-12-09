@@ -11,6 +11,7 @@ struct SearchView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.black)
                 TextField(languageManager.localizedString("Search recipes..."), text: $viewModel.searchText)
+                    .foregroundColor(.black)
             }
             .padding()
             .background(Color.white)

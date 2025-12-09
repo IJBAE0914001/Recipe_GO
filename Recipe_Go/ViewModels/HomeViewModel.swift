@@ -14,10 +14,8 @@ class HomeViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            // For "Today's Recommendation", we can fetch a random recipe or a specific category.
-            // MealDB supports random via 'random.php', but let's search for a common term like 'Chicken' for now to show a list.
-            // Or we can fetch a few random ones. Let's try searching 'Chicken' as a default for the home feed.
-            let fetchedRecipes = try await service.fetchRecipes(query: "Chicken")
+            // Fetch first 10 recipes for recommendations
+            let fetchedRecipes = try await service.fetchRecipes(start: 1, end: 10)
             recipes = fetchedRecipes
         } catch {
             errorMessage = error.localizedDescription
