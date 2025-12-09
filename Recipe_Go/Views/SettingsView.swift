@@ -2,35 +2,31 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var themeManager: ThemeManager
-    @EnvironmentObject var languageManager: LanguageManager
     
     var body: some View {
         NavigationView {
             List {
-                // 일반 설정 (General Settings)
-                Section(header: Text(languageManager.localizedString("General"))) {
-                    // 테마 설정 (Display & Brightness)
-                    Picker(selection: $themeManager.selectedTheme, label: Label(languageManager.localizedString("Display & Brightness"), systemImage: "sun.max")) {
+                Section(header: Text("일반")) {
+                    Picker(selection: $themeManager.selectedTheme, label: Label("밝기 설정", systemImage: "sun.max")) {
                         ForEach(AppTheme.allCases) { theme in
-                            Text(languageManager.localizedString(theme.rawValue)).tag(theme)
+                            Text(theme.rawValue == "System" ? "시스템 설정" : (theme.rawValue == "Light" ? "라이트 모드" : "다크 모드")).tag(theme)
                         }
                     }
                 }
                 
-                // 앱 정보 (About)
-                Section(header: Text(languageManager.localizedString("About")), footer: HStack {
+                Section(header: Text("정보"), footer: HStack {
                     Spacer()
-                    // 앱 버전 표시 (App Version)
-                    Text("\(languageManager.localizedString("Version")) 1.0.0")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(.top, 20)
+                    Text("버전 1.0.0")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
                     Spacer()
                 }) {
-                   // 이용약관 삭제됨 (Terms of Service removed)
+                    NavigationLink(destination: Text("이용 약관")) {
+                        Label("이용 약관", systemImage: "doc.text")
+                    }
                 }
             }
-            .navigationTitle(languageManager.localizedString("Settings"))
+            .navigationTitle("설정")
             .listStyle(InsetGroupedListStyle())
         }
     }
@@ -39,5 +35,4 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environmentObject(ThemeManager())
-        .environmentObject(LanguageManager())
 }

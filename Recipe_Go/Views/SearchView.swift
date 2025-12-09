@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SearchView: View {
     @StateObject private var viewModel = SearchViewModel()
-    @EnvironmentObject var languageManager: LanguageManager
     
     var body: some View {
         VStack(spacing: 0) {
@@ -10,7 +9,7 @@ struct SearchView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.black)
-                TextField(languageManager.localizedString("Search recipes..."), text: $viewModel.searchText)
+                TextField("레시피 검색...", text: $viewModel.searchText)
                     .foregroundColor(.black)
             }
             .padding()
@@ -41,7 +40,7 @@ struct SearchView: View {
                 }
             }
         }
-        .navigationTitle(languageManager.localizedString("Search"))
+        .navigationTitle("검색")
         .background(Color(uiColor: .systemGroupedBackground))
     }
 }
@@ -49,5 +48,4 @@ struct SearchView: View {
 #Preview {
     SearchView()
         .environmentObject(FavoritesViewModel())
-        .environmentObject(LanguageManager())
 }

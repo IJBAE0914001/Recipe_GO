@@ -2,7 +2,6 @@ import SwiftUI
 
 struct FavoritesView: View {
     @EnvironmentObject var viewModel: FavoritesViewModel
-    @EnvironmentObject var languageManager: LanguageManager
     
     var body: some View {
         NavigationView {
@@ -13,7 +12,7 @@ struct FavoritesView: View {
                         Image(systemName: "heart.slash")
                             .font(.system(size: 60))
                             .foregroundColor(.gray)
-                        Text("No favorites yet")
+                        Text("아직 즐겨찾기가 없습니다")
                             .font(.title2)
                             .foregroundColor(.gray)
                     }
@@ -31,7 +30,7 @@ struct FavoritesView: View {
                     .padding()
                 }
             }
-            .navigationTitle(languageManager.localizedString("Favorites"))
+            .navigationTitle("즐겨찾기")
             .background(Color(uiColor: .systemGroupedBackground))
         }
     }
@@ -40,5 +39,4 @@ struct FavoritesView: View {
 #Preview {
     FavoritesView()
         .environmentObject(FavoritesViewModel())
-        .environmentObject(LanguageManager())
 }

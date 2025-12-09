@@ -14,7 +14,7 @@ struct Recipe_GoApp: App {
     
     // 전역 상태 관리자 (Global State Managers)
     @StateObject private var themeManager = ThemeManager()
-    @StateObject private var languageManager = LanguageManager()
+
 
     var body: some Scene {
         WindowGroup {
@@ -22,7 +22,6 @@ struct Recipe_GoApp: App {
                 // 환경 객체 주입 (Inject Environment Objects)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(themeManager)
-                .environmentObject(languageManager)
                 // 테마 적용 (Apply Theme)
                 .preferredColorScheme(themeManager.colorScheme)
         }

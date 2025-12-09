@@ -2,7 +2,6 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-    @EnvironmentObject var languageManager: LanguageManager
     
     // 그리드 레이아웃 설정 (Grid Layout Configuration)
     private let columns = [
@@ -16,7 +15,7 @@ struct HomeView: View {
                 // 고정 헤더 영역 (Sticky Header Area)
                 VStack(alignment: .leading, spacing: 20) {
                     // 헤더 / 타이틀 영역 (Header / Title Area)
-                    Text(languageManager.localizedString("What would you like\nto cook today?"))
+                    Text("오늘 무엇을\n요리하시겠어요?")
                         .font(.largeTitle)
                         .bold()
                         .padding(.horizontal)
@@ -27,7 +26,7 @@ struct HomeView: View {
                         HStack {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(.gray)
-                            Text(languageManager.localizedString("Search recipes..."))
+                            Text("레시피 검색...")
                                 .foregroundColor(.gray)
                             Spacer()
                         }
@@ -44,10 +43,10 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         if viewModel.isLoading {
-                            ProgressView(languageManager.localizedString("Loading..."))
+                            ProgressView("로딩 중...")
                                 .frame(maxWidth: .infinity, minHeight: 200)
                         } else if let error = viewModel.errorMessage {
-                            Text("\(languageManager.localizedString("Error")): \(error)")
+                            Text("오류: \(error)")
                                 .foregroundColor(.red)
                                 .padding()
                         } else {
@@ -80,5 +79,4 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environmentObject(FavoritesViewModel())
-        .environmentObject(LanguageManager())
 }
