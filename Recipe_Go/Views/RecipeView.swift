@@ -39,16 +39,24 @@ struct RecipeView: View {
                             Spacer()
                         }
                         
-                        // 카테고리 태그 (Category Tag)
-                        if let category = recipe.category {
-                            Text(category)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(Color.blue.opacity(0.1))
-                                .cornerRadius(20)
+                        // 카테고리 및 칼로리 정보
+                        VStack(alignment: .leading, spacing: 4) {
+                            // 카테고리 (Category)
+                            if let category = recipe.category {
+                                Label(category, systemImage: "tag.fill")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            // 칼로리 (Calories)
+                            if let calories = recipe.calories {
+                                Label("\(calories) kcal", systemImage: "flame.fill")
+                                    .font(.subheadline)
+                                    .foregroundColor(.orange)
+                            }
                         }
+                        
+                        Divider()
                     }
                     
                     // 재료 목록 (Ingredients)

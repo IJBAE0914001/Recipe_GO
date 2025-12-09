@@ -41,15 +41,29 @@ struct RecipeCard: View {
                     .font(.headline)
                     .lineLimit(2)
                     .foregroundColor(.primary)
-                
-                if let category = recipe.category {
-                    Text(category)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(4)
+                // 카테고리 및 칼로리 (Category and Calories)
+                HStack {
+                    if let category = recipe.category {
+                        Text(category)
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(4)
+                    }
+                    
+                    Spacer()
+                    
+                    if let calories = recipe.calories {
+                        HStack(spacing: 4) {
+                            Image(systemName: "flame.fill")
+                                .font(.caption2)
+                            Text("\(calories) kcal")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.orange)
+                    }
                 }
             }
             .padding(12)

@@ -33,6 +33,7 @@ struct ResultCode: Codable {
 }
 
 // 식품안전나라 API 레시피 모델 (FoodSafetyKorea API Recipe Model)
+// 식품안전나라 API 레시피 모델 (FoodSafetyKorea API Recipe Model)
 struct FoodSafetyRecipe: Codable {
     let rcpSeq: String        // 레시피 일련번호 (Recipe Sequence)
     let rcpNm: String         // 메뉴명 (Menu Name)
@@ -41,6 +42,7 @@ struct FoodSafetyRecipe: Codable {
     let attFileNoMain: String // 메인 이미지 URL (Main Image URL)
     let attFileNoMk: String   // 메이킹 이미지 URL (Making Image URL)
     let rcpPartsDtls: String  // 재료 정보 (Ingredients Details)
+    let infoEng: String       // 열량 (Calories) - INFO_ENG
     // 매뉴얼 내용 및 이미지 (Manual Steps and Images)
     let manual01: String?
     let manual02: String?
@@ -91,6 +93,7 @@ struct FoodSafetyRecipe: Codable {
         case attFileNoMain = "ATT_FILE_NO_MAIN"
         case attFileNoMk = "ATT_FILE_NO_MK"
         case rcpPartsDtls = "RCP_PARTS_DTLS"
+        case infoEng = "INFO_ENG"
         case manual01 = "MANUAL01"
         case manual02 = "MANUAL02"
         case manual03 = "MANUAL03"
@@ -147,6 +150,7 @@ struct Recipe: Identifiable, Codable {
     let tags: String?        // 태그 (Tags - e.g. Cooking Method)
     let youtube: String?     // 유튜브 링크 (YouTube Link - Not used currently)
     let ingredients: [Ingredient]? // 재료 목록 (List of Ingredients)
+    let calories: String?    // 칼로리 (Calories)
     
     // API 모델로부터 초기화 (Initializer from API Model)
     init(from apiRecipe: FoodSafetyRecipe) {
@@ -158,6 +162,7 @@ struct Recipe: Identifiable, Codable {
         self.thumbnail = apiRecipe.attFileNoMain.replacingOccurrences(of: "http://", with: "https://")
         self.tags = apiRecipe.rcpWay2 // 조리 방법을 태그로 사용 (Using cooking method as tag)
         self.youtube = nil // 제공 안됨 (Not available)
+        self.calories = apiRecipe.infoEng // 칼로리 정보 설정
         
         // 매뉴얼 합치기 (Combine manuals)
         var combinedInstructions = ""
@@ -187,7 +192,7 @@ struct Recipe: Identifiable, Codable {
     }
     
     // 프리뷰 등을 위한 초기화 헬퍼 (Helper for manual initialization e.g. previews)
-    init(id: String, title: String, thumbnail: String?, instructions: String?, ingredients: [Ingredient]?, category: String? = nil) {
+    init(id: String, title: String, thumbnail: String?, instructions: String?, ingredients: [Ingredient]?, category: String? = nil, calories: String? = nil) {
         self.id = id
         self.title = title
         self.thumbnail = thumbnail
@@ -197,5 +202,6 @@ struct Recipe: Identifiable, Codable {
         self.area = nil
         self.tags = nil
         self.youtube = nil
+        self.calories = calories
     }
 }
